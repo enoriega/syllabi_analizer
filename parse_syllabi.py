@@ -355,6 +355,21 @@ def process_syllabi_directory(
 
         print()
 
+        # Print progress update every 100 files
+        if idx % 100 == 0:
+            total_processed = success_count + error_count + skipped_count + year_filtered_count
+            print(f"\n{'='*60}")
+            print(f"Progress Update: Processed {idx}/{len(txt_files)} files")
+            print(f"  Successfully parsed: {success_count}")
+            print(f"  Skipped (already processed): {skipped_count}")
+            if min_year:
+                print(f"  Filtered by year: {year_filtered_count}")
+            print(f"  Errors: {error_count}")
+            ai_so_far = sum(1 for s in parsed_syllabi if s.is_ai_related)
+            if len(parsed_syllabi) > 0:
+                print(f"  AI-related so far: {ai_so_far}/{len(parsed_syllabi)} ({ai_so_far/len(parsed_syllabi)*100:.1f}%)")
+            print(f"{'='*60}\n")
+
     # Save results to JSON
     print(f"\nSaving results to {output_file}...")
     output_path = Path(output_file)
