@@ -2,13 +2,16 @@
 """
 Script to parse syllabi text files and extract structured information using an LLM.
 Uses LangChain to create a pipeline that processes syllabi and populates Syllabus models.
+Supports parallel processing using multiprocessing for faster processing.
 """
 
 import os
 import json
 import re
+import multiprocessing as mp
 from pathlib import Path
 from typing import List, Optional
+from dataclasses import dataclass
 from dotenv import load_dotenv
 
 from langchain_openai import ChatOpenAI
@@ -20,6 +23,28 @@ from models import Syllabus, Term, Semester
 
 # Load environment variables
 load_dotenv()
+
+
+@dataclass
+class ProcessingTask:
+    """Task to be processed by a worker."""
+    txt_file: Path
+    original_filename: str
+    relative_path: str
+    content: str
+    extracted_year: Optional[int]
+    input_path: Path
+
+
+@dataclass
+class ProcessingResult:
+    """Result from processing a single file."""
+    txt_file: Path
+    syllabus: Optional[Syllabus]
+    success: bool
+    skipped: bool
+    year_filtered: bool
+    error_message: str = ""
 
 
 def extract_year_from_path(file_path: str, filename: str) -> Optional[int]:
@@ -200,6 +225,52 @@ def parse_syllabus(
         return None
 
 
+def process_single_file(task: ProcessingTask) -> ProcessingResult:
+    """
+    Worker function to process a single syllabus file.
+
+    This function is called by worker processes in the pool.
+
+    Args:
+        task: ProcessingTask containing file information
+
+    Returns:
+        ProcessingResult with parsing outcome
+    """
+    try:
+        # Setup LLM and prompt (each worker needs its own instance)
+        llm = setup_llm()
+        prompt = create_parsing_prompt()
+
+        # Parse the syllabus
+        syllabus = parse_syllabus(
+            filename=task.original_filename,
+            file_path=task.relative_path,
+            content=task.content,
+            llm=llm,
+            prompt=prompt
+        )
+
+        return ProcessingResult(
+            txt_file=task.txt_file,
+            syllabus=syllabus,
+            success=syllabus is not None,
+            skipped=False,
+            year_filtered=False,
+            error_message=""
+        )
+
+    except Exception as e:
+        return ProcessingResult(
+            txt_file=task.txt_file,
+            syllabus=None,
+            success=False,
+            skipped=False,
+            year_filtered=False,
+            error_message=str(e)
+        )
+
+
 def load_existing_results(output_file: str) -> tuple[List[Syllabus], set[str]]:
     """
     Load existing parsed syllabi from output file if it exists.
@@ -237,7 +308,9 @@ def process_syllabi_directory(
     input_dir: str,
     output_file: str = "parsed_syllabi.json",
     max_files: Optional[int] = None,
-    min_year: Optional[int] = None
+    min_year: Optional[int] = None,
+    num_workers: int = 5,
+    use_parallel: bool = True
 ) -> List[Syllabus]:
     """
     Process all .txt files in a directory and extract structured syllabus information.
@@ -247,6 +320,8 @@ def process_syllabi_directory(
         output_file: Output JSON file path
         max_files: Optional limit on number of files to process (for testing)
         min_year: Optional minimum year filter (only process courses from this year onwards)
+        num_workers: Number of parallel workers (default: 5)
+        use_parallel: Whether to use parallel processing (default: True)
 
     Returns:
         List of parsed Syllabus objects
@@ -264,12 +339,6 @@ def process_syllabi_directory(
     else:
         print("No existing results found, starting fresh\n")
 
-    # Setup LLM and prompt
-    print("Setting up LLM...")
-    llm = setup_llm()
-    prompt = create_parsing_prompt()
-    print(f"Using model: {os.getenv('LLM_MODEL_NAME')}\n")
-
     # Find all .txt files
     txt_files = list(input_path.rglob("*.txt"))
 
@@ -278,97 +347,156 @@ def process_syllabi_directory(
 
     print(f"Found {len(txt_files)} syllabus files to process")
     if min_year:
-        print(f"Filtering for courses from {min_year} onwards\n")
+        print(f"Filtering for courses from {min_year} onwards")
+    if use_parallel:
+        print(f"Using parallel processing with {num_workers} workers\n")
     else:
-        print()
+        print(f"Using sequential processing\n")
 
-    success_count = 0
-    error_count = 0
+    # Prepare tasks for processing
+    tasks = []
     skipped_count = 0
     year_filtered_count = 0
 
-    for idx, txt_file in enumerate(txt_files, 1):
-        print(f"[{idx}/{len(txt_files)}] Processing: {txt_file.relative_to(input_path)}")
+    print("Preparing tasks...")
+    for txt_file in txt_files:
+        # Get the original filename (remove .txt extension)
+        original_filename = txt_file.name[:-4] if txt_file.name.endswith('.txt') else txt_file.name
 
-        try:
-            # Get the original filename (remove .txt extension)
-            original_filename = txt_file.name[:-4] if txt_file.name.endswith('.txt') else txt_file.name
+        # Check if already processed
+        if original_filename in processed_filenames:
+            skipped_count += 1
+            continue
 
-            # Check if already processed
-            if original_filename in processed_filenames:
-                print(f"  ⊙ Already processed, skipping")
-                skipped_count += 1
-                print()
+        # Check year filter if specified
+        if min_year:
+            relative_path = str(txt_file.relative_to(input_path))
+            extracted_year = extract_year_from_path(relative_path, original_filename)
+
+            if extracted_year is not None and extracted_year < min_year:
+                year_filtered_count += 1
                 continue
 
-            # Check year filter if specified
-            if min_year:
-                relative_path = str(txt_file.relative_to(input_path))
-                extracted_year = extract_year_from_path(relative_path, original_filename)
-
-                if extracted_year is not None:
-                    if extracted_year < min_year:
-                        print(f"  ⊙ Year {extracted_year} < {min_year}, skipping")
-                        year_filtered_count += 1
-                        print()
-                        continue
-                    else:
-                        print(f"  ℹ Year detected: {extracted_year}")
-                else:
-                    # If we can't determine the year, we'll process it (conservative approach)
-                    print(f"  ⚠ Could not determine year from path, processing anyway")
-
-            # Read the syllabus text
+        # Read the syllabus text
+        try:
             with open(txt_file, 'r', encoding='utf-8') as f:
                 content = f.read()
 
             # Skip empty files
             if not content.strip():
-                print("  ⊙ Skipping empty file")
-                print()
                 continue
 
             # Get relative path for context
             relative_path = str(txt_file.relative_to(input_path))
 
-            # Parse the syllabus
-            syllabus = parse_syllabus(
-                filename=original_filename,
-                file_path=relative_path,
+            # Create task
+            tasks.append(ProcessingTask(
+                txt_file=txt_file,
+                original_filename=original_filename,
+                relative_path=relative_path,
                 content=content,
-                llm=llm,
-                prompt=prompt
-            )
+                extracted_year=extracted_year if min_year else None,
+                input_path=input_path
+            ))
 
-            if syllabus:
-                parsed_syllabi.append(syllabus)
-                print(f"  ✓ Successfully parsed")
-                print(f"    Course: {syllabus.course_name}")
-                print(f"    AI-related: {syllabus.is_ai_related}")
+        except Exception as e:
+            print(f"Warning: Could not read {txt_file}: {e}")
+            continue
+
+    print(f"Tasks prepared: {len(tasks)} files to process")
+    print(f"  Skipped (already processed): {skipped_count}")
+    if min_year:
+        print(f"  Filtered by year (< {min_year}): {year_filtered_count}")
+    print()
+
+    # Initialize counters
+    success_count = 0
+    error_count = 0
+
+    if not tasks:
+        print("No new files to process!")
+    else:
+        # Process files
+        print(f"Processing {len(tasks)} files...")
+        print(f"Using model: {os.getenv('LLM_MODEL_NAME')}\n")
+
+        if use_parallel and len(tasks) > 1:
+            # Parallel processing
+            with mp.Pool(processes=num_workers) as pool:
+                # Use imap for ordered results and progress tracking
+                results = []
+                for idx, result in enumerate(pool.imap(process_single_file, tasks), 1):
+                    results.append(result)
+
+                    # Display individual result
+                    relative_path = result.txt_file.relative_to(input_path)
+                    print(f"[{idx}/{len(tasks)}] {'✓' if result.success else '✗'} {relative_path}")
+
+                    if result.success and result.syllabus:
+                        print(f"  ✓ Successfully parsed")
+                        print(f"    Course: {result.syllabus.course_name}")
+                        print(f"    AI-related: {result.syllabus.is_ai_related}")
+                    elif result.error_message:
+                        print(f"  ✗ Error: {result.error_message}")
+
+                    print()
+
+                    # Print progress update every 100 files
+                    if idx % 100 == 0:
+                        success_so_far = sum(1 for r in results if r.success)
+                        error_so_far = sum(1 for r in results if not r.success and not r.skipped and not r.year_filtered)
+                        syllabi_so_far = [r.syllabus for r in results if r.syllabus]
+                        ai_so_far = sum(1 for s in syllabi_so_far if s.is_ai_related)
+
+                        print(f"\n{'='*60}")
+                        print(f"Progress Update: Processed {idx}/{len(tasks)} files")
+                        print(f"  Successfully parsed: {success_so_far}")
+                        print(f"  Errors: {error_so_far}")
+                        if len(syllabi_so_far) > 0:
+                            print(f"  AI-related so far: {ai_so_far}/{len(syllabi_so_far)} ({ai_so_far/len(syllabi_so_far)*100:.1f}%)")
+                        print(f"{'='*60}\n")
+        else:
+            # Sequential processing
+            results = []
+            for idx, task in enumerate(tasks, 1):
+                result = process_single_file(task)
+                results.append(result)
+
+                # Display individual result
+                relative_path = result.txt_file.relative_to(input_path)
+                print(f"[{idx}/{len(tasks)}] {'✓' if result.success else '✗'} {relative_path}")
+
+                if result.success and result.syllabus:
+                    print(f"  ✓ Successfully parsed")
+                    print(f"    Course: {result.syllabus.course_name}")
+                    print(f"    AI-related: {result.syllabus.is_ai_related}")
+                elif result.error_message:
+                    print(f"  ✗ Error: {result.error_message}")
+
+                print()
+
+                # Print progress update every 100 files
+                if idx % 100 == 0:
+                    success_so_far = sum(1 for r in results if r.success)
+                    error_so_far = sum(1 for r in results if not r.success and not r.skipped and not r.year_filtered)
+                    syllabi_so_far = [r.syllabus for r in results if r.syllabus]
+                    ai_so_far = sum(1 for s in syllabi_so_far if s.is_ai_related)
+
+                    print(f"\n{'='*60}")
+                    print(f"Progress Update: Processed {idx}/{len(tasks)} files")
+                    print(f"  Successfully parsed: {success_so_far}")
+                    print(f"  Errors: {error_so_far}")
+                    if len(syllabi_so_far) > 0:
+                        print(f"  AI-related so far: {ai_so_far}/{len(syllabi_so_far)} ({ai_so_far/len(syllabi_so_far)*100:.1f}%)")
+                    print(f"{'='*60}\n")
+
+        # Collect successful results and update counters
+        for result in results:
+            if result.success and result.syllabus:
+                parsed_syllabi.append(result.syllabus)
                 success_count += 1
             else:
                 error_count += 1
-
-        except Exception as e:
-            print(f"  ✗ Error: {e}")
-            error_count += 1
-
-        print()
-
-        # Print progress update every 100 files
-        if idx % 100 == 0:
-            total_processed = success_count + error_count + skipped_count + year_filtered_count
-            print(f"\n{'='*60}")
-            print(f"Progress Update: Processed {idx}/{len(txt_files)} files")
-            print(f"  Successfully parsed: {success_count}")
-            print(f"  Skipped (already processed): {skipped_count}")
-            if min_year:
-                print(f"  Filtered by year: {year_filtered_count}")
-            print(f"  Errors: {error_count}")
-            ai_so_far = sum(1 for s in parsed_syllabi if s.is_ai_related)
-            if len(parsed_syllabi) > 0:
-                print(f"  AI-related so far: {ai_so_far}/{len(parsed_syllabi)} ({ai_so_far/len(parsed_syllabi)*100:.1f}%)")
-            print(f"{'='*60}\n")
 
     # Save results to JSON
     print(f"\nSaving results to {output_file}...")
@@ -431,6 +559,17 @@ def main():
         default=2024,
         help="Minimum academic year to process (default: 2024). Only syllabi from this year onwards will be processed."
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=5,
+        help="Number of parallel workers (default: 5)"
+    )
+    parser.add_argument(
+        "--no-parallel",
+        action="store_true",
+        help="Disable parallel processing and process files sequentially"
+    )
 
     args = parser.parse_args()
 
@@ -445,7 +584,9 @@ def main():
         input_dir=args.input_dir,
         output_file=args.output_file,
         max_files=args.max_files,
-        min_year=args.min_year
+        min_year=args.min_year,
+        num_workers=args.workers,
+        use_parallel=not args.no_parallel
     )
 
 

@@ -21,3 +21,5 @@ parsed_syllabi.json
 *.json
 
 .DS_Store
+
+stash/
