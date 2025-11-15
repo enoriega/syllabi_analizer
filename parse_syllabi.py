@@ -6,6 +6,7 @@ Uses LangChain to create a pipeline that processes syllabi and populates Syllabu
 
 import os
 import json
+import re
 from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
@@ -19,6 +20,37 @@ from models import Syllabus, Term, Semester
 
 # Load environment variables
 load_dotenv()
+
+
+def extract_year_from_path(file_path: str, filename: str) -> Optional[int]:
+    """
+    Extract academic year from file path or filename.
+
+    Looks for 4-digit years in the path and filename. Common patterns:
+    - "Spring 2024"
+    - "Fall2023"
+    - "2024_Spring"
+    - Directory names like "2023" or "Spring 2023"
+
+    Args:
+        file_path: The full relative path to the file
+        filename: The filename
+
+    Returns:
+        The year as an integer, or None if not found
+    """
+    # Combine path and filename for searching
+    full_path = f"{file_path} {filename}"
+
+    # Find all 4-digit numbers that look like years (2000-2099)
+    year_pattern = r'\b(20[0-9]{2})\b'
+    years = re.findall(year_pattern, full_path)
+
+    if years:
+        # Return the most recent year found (likely the academic year)
+        return int(max(years))
+
+    return None
 
 
 def setup_llm() -> ChatOpenAI:
@@ -204,7 +236,8 @@ def load_existing_results(output_file: str) -> tuple[List[Syllabus], set[str]]:
 def process_syllabi_directory(
     input_dir: str,
     output_file: str = "parsed_syllabi.json",
-    max_files: Optional[int] = None
+    max_files: Optional[int] = None,
+    min_year: Optional[int] = None
 ) -> List[Syllabus]:
     """
     Process all .txt files in a directory and extract structured syllabus information.
@@ -213,6 +246,7 @@ def process_syllabi_directory(
         input_dir: Directory containing .txt syllabus files
         output_file: Output JSON file path
         max_files: Optional limit on number of files to process (for testing)
+        min_year: Optional minimum year filter (only process courses from this year onwards)
 
     Returns:
         List of parsed Syllabus objects
@@ -242,11 +276,16 @@ def process_syllabi_directory(
     if max_files:
         txt_files = txt_files[:max_files]
 
-    print(f"Found {len(txt_files)} syllabus files to process\n")
+    print(f"Found {len(txt_files)} syllabus files to process")
+    if min_year:
+        print(f"Filtering for courses from {min_year} onwards\n")
+    else:
+        print()
 
     success_count = 0
     error_count = 0
     skipped_count = 0
+    year_filtered_count = 0
 
     for idx, txt_file in enumerate(txt_files, 1):
         print(f"[{idx}/{len(txt_files)}] Processing: {txt_file.relative_to(input_path)}")
@@ -261,6 +300,23 @@ def process_syllabi_directory(
                 skipped_count += 1
                 print()
                 continue
+
+            # Check year filter if specified
+            if min_year:
+                relative_path = str(txt_file.relative_to(input_path))
+                extracted_year = extract_year_from_path(relative_path, original_filename)
+
+                if extracted_year is not None:
+                    if extracted_year < min_year:
+                        print(f"  ⊙ Year {extracted_year} < {min_year}, skipping")
+                        year_filtered_count += 1
+                        print()
+                        continue
+                    else:
+                        print(f"  ℹ Year detected: {extracted_year}")
+                else:
+                    # If we can't determine the year, we'll process it (conservative approach)
+                    print(f"  ⚠ Could not determine year from path, processing anyway")
 
             # Read the syllabus text
             with open(txt_file, 'r', encoding='utf-8') as f:
@@ -317,6 +373,8 @@ def process_syllabi_directory(
     print(f"  Total files: {len(txt_files)}")
     print(f"  Successfully parsed (new): {success_count}")
     print(f"  Skipped (already processed): {skipped_count}")
+    if min_year:
+        print(f"  Filtered by year (< {min_year}): {year_filtered_count}")
     print(f"  Errors: {error_count}")
     print(f"  Total in output file: {len(parsed_syllabi)}")
 
@@ -352,6 +410,12 @@ def main():
         default=None,
         help="Maximum number of files to process (useful for testing)"
     )
+    parser.add_argument(
+        "--min-year",
+        type=int,
+        default=2024,
+        help="Minimum academic year to process (default: 2024). Only syllabi from this year onwards will be processed."
+    )
 
     args = parser.parse_args()
 
@@ -365,7 +429,8 @@ def main():
     process_syllabi_directory(
         input_dir=args.input_dir,
         output_file=args.output_file,
-        max_files=args.max_files
+        max_files=args.max_files,
+        min_year=args.min_year
     )
 
 

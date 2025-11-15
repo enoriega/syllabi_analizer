@@ -19,3 +19,5 @@ output/
 # Generated files
 parsed_syllabi.json
 *.json
+
+.DS_Store
