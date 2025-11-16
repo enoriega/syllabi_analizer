@@ -4,6 +4,7 @@ Helper script to analyze parsed syllabi results.
 """
 
 import json
+import re
 from pathlib import Path
 from collections import Counter
 from typing import List, Dict, Any
@@ -120,6 +121,101 @@ def export_ai_courses(syllabi: List[Dict[str, Any]], output_file: str):
     print(f"\nExported {len(ai_related)} AI-related courses to {output_file}")
 
 
+def extract_academic_unit(course_name: str) -> str:
+    """Extract academic unit acronym from course name.
+
+    Looks for patterns like 'SLAT', 'INFO', 'CS', etc. at the beginning
+    of the course name or before a course number.
+    """
+    # Try to match acronym at the start (e.g., "SLAT 596" or "INFO-101")
+    match = re.match(r'^([A-Z]{2,6})[\s\-_]', course_name)
+    if match:
+        return match.group(1)
+
+    # Try to match just the acronym if it's at the very start
+    match = re.match(r'^([A-Z]{2,6})\d', course_name)
+    if match:
+        return match.group(1)
+
+    # If no clear pattern, return "UNKNOWN"
+    return "UNKNOWN"
+
+
+def print_ai_distributions(syllabi: List[Dict[str, Any]]):
+    """Print distribution of AI courses per academic unit and per term."""
+
+    ai_related = [s for s in syllabi if s['is_ai_related']]
+
+    if not ai_related:
+        print("\nNo AI-related courses found.")
+        return
+
+    print("\n" + "=" * 70)
+    print("AI COURSES DISTRIBUTION")
+    print("=" * 70)
+
+    # Distribution by academic unit
+    print("\n--- Distribution by Academic Unit ---")
+    unit_counter = Counter()
+
+    for syllabus in ai_related:
+        unit = extract_academic_unit(syllabus['course_name'])
+        unit_counter[unit] += 1
+
+    total_ai = len(ai_related)
+    print(f"\nTotal AI-related courses: {total_ai}\n")
+
+    for unit, count in unit_counter.most_common():
+        percentage = (count / total_ai) * 100
+        print(f"  {unit:12s}: {count:3d} courses ({percentage:5.1f}%)")
+
+    # Distribution by term
+    print("\n--- Distribution by Term Offered ---")
+    term_data = []  # Store (year, semester, count) tuples for sorting
+    courses_without_term = 0
+
+    # Define semester order for sorting
+    semester_order = {'spring': 1, 'summer': 2, 'fall': 3, 'winter': 4, 'unknown': 5}
+
+    # Collect term data
+    term_counter = Counter()
+    for syllabus in ai_related:
+        if syllabus.get('term_offered'):
+            term = syllabus['term_offered']
+            semester = term.get('semester', 'Unknown').lower()
+            year = term.get('academic_year', 'Unknown')
+            term_key = (year, semester)
+            term_counter[term_key] += 1
+        else:
+            courses_without_term += 1
+
+    # Convert to list and sort chronologically
+    for (year, semester), count in term_counter.items():
+        # Convert year to int for sorting (handle 'Unknown' case)
+        try:
+            year_int = int(year) if year != 'Unknown' else 9999
+        except (ValueError, TypeError):
+            year_int = 9999
+
+        semester_sort_key = semester_order.get(semester, 5)
+        term_data.append((year_int, semester_sort_key, year, semester, count))
+
+    # Sort by year then semester
+    term_data.sort(key=lambda x: (x[0], x[1]))
+
+    print()
+    for year_int, _, year, semester, count in term_data:
+        percentage = (count / total_ai) * 100
+        term_str = f"{semester.capitalize()} {year}"
+        print(f"  {term_str:20s}: {count:3d} courses ({percentage:5.1f}%)")
+
+    if courses_without_term > 0:
+        percentage = (courses_without_term / total_ai) * 100
+        print(f"  {'Unknown':20s}: {courses_without_term:3d} courses ({percentage:5.1f}%)")
+
+    print("\n" + "=" * 70)
+
+
 def main():
     """Main entry point."""
     import argparse
@@ -148,6 +244,11 @@ def main():
         type=str,
         help="Export AI-related courses to a separate JSON file"
     )
+    parser.add_argument(
+        "--ai-distributions",
+        action="store_true",
+        help="Show distribution of AI courses per academic unit and term"
+    )
 
     args = parser.parse_args()
 
@@ -175,6 +276,10 @@ def main():
     # Export AI courses if requested
     if args.export_ai:
         export_ai_courses(syllabi, args.export_ai)
+
+    # Show AI distributions if requested
+    if args.ai_distributions:
+        print_ai_distributions(syllabi)
 
 
 if __name__ == "__main__":
