@@ -1958,6 +1958,7 @@ dependencies = [
     { name = "python-docx" },
     { name = "python-dotenv" },
     { name = "python-pptx" },
+    { name = "requests" },
     { name = "unstructured" },
 ]
 
@@ -1973,6 +1974,7 @@ requires-dist = [
     { name = "python-docx", specifier = ">=1.1.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "python-pptx", specifier = ">=0.6.23" },
+    { name = "requests", specifier = ">=2.31.0" },
     { name = "unstructured", specifier = ">=0.10.0" },
 ]
 

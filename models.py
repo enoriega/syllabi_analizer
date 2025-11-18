@@ -86,3 +86,91 @@ class Syllabus(BaseModel):
                 "ai_related_justification": "This course directly covers machine learning algorithms and techniques, which are core components of artificial intelligence. The curriculum includes neural networks, deep learning, and other AI methodologies."
             }
         }
+
+
+class CourseType(str, Enum):
+    """Enumeration of course classification types."""
+    CORE_AI = "core_ai"
+    APPLIED_AI = "applied_ai"
+    CORE_DATA_SCIENCE = "core_data_science"
+    APPLIED_DATA_SCIENCE = "applied_data_science"
+    OTHER = "other"
+
+
+class ClassifiedCourse(BaseModel):
+    """
+    Represents a classified course with all its information and classification.
+    """
+
+    course_id: str = Field(
+        ...,
+        description="The unique course ID from the CSV"
+    )
+
+    subject_codes: str = Field(
+        ...,
+        description="Subject code(s) for the course"
+    )
+
+    offering_unit: str = Field(
+        ...,
+        description="The unit offering the course"
+    )
+
+    course_title: str = Field(
+        ...,
+        description="The title of the course"
+    )
+
+    max_units: str = Field(
+        ...,
+        description="Maximum units for the course"
+    )
+
+    course_url: str = Field(
+        ...,
+        description="URL to the course catalog page"
+    )
+
+    is_graduate: str = Field(
+        ...,
+        description="Whether the course is graduate level"
+    )
+
+    catalog_description: Optional[str] = Field(
+        None,
+        description="Course description fetched from the catalog URL"
+    )
+
+    syllabus_description: Optional[str] = Field(
+        None,
+        description="Course description from the matched syllabus"
+    )
+
+    course_type: CourseType = Field(
+        ...,
+        description="The classification of the course"
+    )
+
+    classification_justification: str = Field(
+        ...,
+        description="Plain English justification for the classification decision"
+    )
+
+    class Config:
+        use_enum_values = True
+        json_schema_extra = {
+            "example": {
+                "course_id": "9850",
+                "subject_codes": "CSC 477",
+                "offering_unit": "Computer Science",
+                "course_title": "Introduction to Computer Vision",
+                "max_units": "3",
+                "course_url": "https://catalog.arizona.edu/courses/0098501",
+                "is_graduate": "No",
+                "catalog_description": "Introduction to computer vision...",
+                "syllabus_description": "This course covers...",
+                "course_type": "core_ai",
+                "classification_justification": "This is a core AI course because..."
+            }
+        }
