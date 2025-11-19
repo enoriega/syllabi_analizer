@@ -1,0 +1,7 @@
+# Sample faculty profile URLs for testing
+# University of Arizona Profiles
+
+https://profiles.arizona.edu/person/aaronmason
+
+# Add more URLs below (one per line)
+# Lines starting with # are treated as comments and ignored

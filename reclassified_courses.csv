@@ -1,0 +1,213 @@
+subject_codes,offering_unit,course_title,course_type,topics
+CSC 477,Computer Science,Introduction to Computer Vision,core_ai,CV; DL; ML
+APCV 471,Applied Science,Artificial Intelligence,core_ai,AI; ML
+ECE 479,Electrical & Computer Engr,Principles of Artificial Intelligence,core_ai,AI; ML
+ECON 418,Economics,Introduction to Econometrics,applied_data_science,ML; STAT
+ECON 453,Economics,Data Analytics and Modeling: Quantitative Analysis for Economic Strategy,applied_data_science,DM; ML; STAT
+GEOG 457 / GIST 457 / PLG 457,"Geography & Dev, Sch of","Statistical Techniques in Geography, Regional Development and Planning",applied_data_science,DM; ML; STAT
+CSC 438 / LING 438 / PSY 438,Linguistics,Computational Linguistics,core_ai,NLP
+CSC 439 / DATA 439 / ISTA 439 / LING 439,Linguistics,Statistical Natural Language Processing,core_ai,ML; NLP; STAT
+CSC 455 / PHIL 455,Philosophy,Philosophy and Artificial Intelligence,Philosophy of AI,AI
+PSY 444A,Psychology,Computational Cognitive Neuroscience,core_ai,AI; DL; ML
+ISTA 450,Information Science,Artificial Intelligence,core_ai,AI; ML; STAT
+ISTA 410,Information Science,Bayesian Modeling and Inference,core_data_science,ML; STAT
+PHIL 241,Philosophy,Consciousness and Cognition,Philosophy of AI,AI
+ISTA 421,Information Science,Machine Learning,core_ai,ML; STAT
+DATA 361 / MATH 361,Mathematics,Elements of Statistics using Calculus,core_data_science,STAT
+ISTA 321,Information Science,Data Mining and Discovery,core_data_science,AI; DM; ML; STAT
+ESOC 314,Information Science,Theories of New Media,other,AI
+ECE 411,Electrical & Computer Engr,Numeric Modeling of Physics & Biological Systems,applied_ai,DL; ML
+ISTA 455,Information Science,Applied Natural Language Processing,applied_ai,ML; NLP
+ECON 454,Economics,Advanced Data Analytics and Modeling: Advanced Quantitative Analysis for Economic Strategy,applied_data_science,ML; STAT
+ESOC 302,Information Science,Quantitative Methods for the Digital Marketplace,core_data_science,DM; STAT
+ISTA 456,Information Science,Text Retrieval and Web Search,applied_ai,DM; ML; NLP
+ESOC 214,Information Science,Introduction to Data Science,core_data_science,DM; STAT
+CSC 483,Computer Science,Text Retrieval and Web Search,applied_ai,DM; ML; NLP
+PSY 433,Psychology,Decisions and the Brain,other,ML; STAT
+MKTG 451,Marketing,Visual Analytics for Marketing,applied_data_science,BI; DM; STAT
+ISTA 414,Information Science,Computational Social Science,applied_data_science,DM; NLP
+GEOS 405,Geosciences,Accessible Earth (Study Abroad in Italy),applied_data_science,
+ACBS 467 / BE 467,Animal & Biomedical Sciences,Computation in Biomedicine,applied_data_science,DM; STAT
+MNE 420,"Mining Engr & Mineral Res, Sch",Data Analysis and Application Development for Mining Engineers,applied_data_science,DM
+MIS 464,Management Information Systems,Data Analytics,applied_data_science,BI; DL; DM; ML; STAT
+MATH 107,Mathematics,Exploring and Understanding Data,core_data_science,ML; STAT
+BAT 485 / BE 485,Biosystems Engineering,Remote Sensing Data and Methods,applied_data_science,CV; ML
+ISTA 457,Information Science,Neural Networks,core_ai,CV; DL; ML; NLP
+APCV 361,Applied Science,Data Analysis and Visualization,core_data_science,ML; STAT
+ISTA 331,Information Science,Principles and Practice of Data Science,applied_data_science,DL; DM; ML; STAT
+GAME 425,Information Science,Algorithms for Games,core_ai,AI
+MCB 392C,Molecular & Cellular Biology,Directed Research in Systems and Big Data Biology,applied_data_science,
+MCB 498C,Molecular & Cellular Biology,Senior Capstone in MCB: Systems and Big Data Biology,applied_data_science,
+BAT 434 / BE 434,Biosystems Engineering,Biosystems Analytics,applied_data_science,ML
+ISTA 355,Information Science,Introduction to Natural Language Processing,core_ai,NLP
+MCB 447,Molecular & Cellular Biology,Big Data in Molecular Biology and Biomedicine,applied_data_science,DM; ML; STAT
+BIOS 453 / EPID 453,Epidemiology and Biostatistics,Health Data Science Practice,applied_data_science,ML; STAT
+SIE 433,Systems & Industrial Engr,Fundamentals of Data Science for Engineers,core_data_science,ML; STAT
+TLS 333,"Tch, Lrn & Sociocultural Stdy",Digital Multimodal Literacies for Communication,other,AI
+ISTA 322,Information Science,Data Engineering,core_data_science,DM; ML
+NETV 434,Applied Science,Advanced Network and System Security,applied_ai,ML
+DATA 396T,Mathematics,Topics in Undergraduate Statistics & Data Science,core_data_science,STAT
+DATA 496T,Mathematics,Advanced Topics in Undergraduate Statistics & Data Science,core_data_science,STAT
+ISTA 431,Information Science,Data Warehousing and Analytics in the Cloud,core_data_science,BI
+CSC 380,Computer Science,Principles of Data Science,core_data_science,ML; STAT
+PPEL 430,Political Economy & Moral Sci,Data Science for Social Sciences,applied_data_science,DM; STAT
+ECOL 388 / ENVS 388 / GEOS 388 / RNR 388,Renewable Natural Resources,"Biosphere 2 Science, From Wonder to Discovery",applied_data_science,DM; STAT
+LAW 480C,Law,Health Information Technology,applied_data_science,
+NROS 397,Neuroscience,VIP-CURE: Brain Communication Networks,applied_data_science,ML; STAT
+LIS 435,Information Science,Information Services in Business and Industry,applied_data_science,AI; BI
+CSC 480,Computer Science,Principles of Machine Learning,core_ai,ML
+BAT 102,Biosystems Engineering,Introduction to Biosystems Analytics & Technology (BAT) using the CURE Approach,applied_data_science,DM
+INFO 502,Information Science,Data Ethics,Responsible/Ethical AI,AI
+DATA 412 / MATH 412,Mathematics,Linear Algebra for Data Science,core_data_science,DM; ML
+SFWE 411,Electrical & Computer Engr,Software for Industrial Control Systems,applied_ai,AI
+GAME 426,Information Science,Game Artificial Intelligence,core_ai,AI; ML
+ESOC 345,Information Science,Decoding Deceptive Information,Responsible/Ethical AI,AI
+MNE 459,"Mining Engr & Mineral Res, Sch",Machine Learning for Mining Applications,applied_ai,ML
+DATA 474,Mathematics,Introduction to Statistical Machine Learning,core_ai,DL; ML; STAT
+APCV 303,Applied Science,Community Data Fluency for All,applied_data_science,STAT
+BASV 405,Applied Science,Advanced Human Factors,applied_ai,AI
+BASV 305,Applied Science,Introduction to Human Factors,other,AI
+BSM 441,"Medicine, College of, Tucson",Diagnostic Technologies and Their Role in Healthcare,applied_ai,AI; CV; ML
+DATA 201,Mathematics,Foundations of Data Science,core_data_science,STAT
+ESOC 200,Information Science,Visual Content Creation for the Information Age,other,AI
+SOC 301A,"Sociology, Sch of",Introduction to Computational Social Science,applied_data_science,AI; ML; NLP
+PHIL 206,Philosophy,Ethics of Artificial Intelligence,Responsible/Ethical AI,AI; ML; NLP
+SIE 449,Systems & Industrial Engr,Optimization for Machine Learning,core_ai,DL; ML; STAT
+CHEM 227,Chemistry and Biochemistry,Foundations of Analytical Chemistry,core_data_science,STAT
+ECE 425,Electrical & Computer Engr,Introduction to Deep Learning: An Engineering Perspective,core_ai,DL; ML
+APCV 371,Applied Science,Introduction to Artificial Intelligence in Cyber,applied_ai,AI; DL; ML
+BNAN 420,"Business Analytics, Sch of",Business Analytics Techniques,applied_data_science,ML; STAT
+APCV 483,Applied Science,Machine Learning in Cyber,applied_ai,ML
+APCV 485,Applied Science,Deep Learning in Cyber,applied_ai,CV; DL; ML; NLP
+ARCE 450,Civil & Arch Engr & Mechanics,"Building Data Analytics, Visualization, and Management",applied_data_science,BI; DM
+ESOC 428,Information Science,Applied AI Literacies in Information Practice,applied_ai,AI
+ESOC 429,Information Science,AI and the Art & Design of Learning,applied_ai,AI
+OPTI 336,"Optical Sciences, Col",Introduction to Imaging,applied_ai,CV
+HP 401,"Health Professions, Sch of",Artificial Intelligence and Healthcare,applied_ai,AI
+RNR 437,Renewable Natural Resources,Data Wrangling in R for Ecologists,applied_data_science,
+PHP 465,Public Hlth Pract Pol & Transl,Leadership and Strategy for Population Health Using Generative AI,applied_ai,AI; ML
+GHI 463,"Public Health, Col of",Foundations of Public Health Applications of Artificial Intelligence,applied_ai,AI; ML; NLP
+BNAN 440,"Business Analytics, Sch of",Predictive Analytics in Practice,applied_data_science,DM; ML; STAT
+ESOC 320,Information Science,AI Literacies for the Information Age,applied_ai,AI
+DATA 498D,Mathematics,Capstone for Data Science,core_data_science,STAT
+COGS 577 / CSC 577,Computer Science,Introduction to Computer Vision,core_ai,CV
+ECE 532 / OPTI 532,Electrical & Computer Engr,Digital Image Analysis,core_ai,CV; DL; ML
+ECE 533 / OPTI 533,Electrical & Computer Engr,Digital Image Processing,core_ai,CV
+ECE 569,Electrical & Computer Engr,"High Performance Computing: Technology, Architecture, and Algorithms",other,AI; DL; ML
+ECE 579,Electrical & Computer Engr,Principles of Artificial Intelligence,core_ai,AI
+ECON 518,Economics,Introduction to Econometrics,applied_data_science,STAT
+BIOS 648,Epidemiology and Biostatistics,High-dimensional Health Data Analysis and Machine Learning,applied_ai,ML; STAT
+GEOG 557 / GIST 557 / PLG 557,"Geography & Dev, Sch of","Statistical Techniques in Geography, Regional Development and Planning",applied_data_science,DM; ML; STAT
+CE 655 / HWRS 655,Hydrology & Atmospheric Sci,Stochastic Methods in Surface Hydrology,applied_ai,ML; STAT
+CSC 538 / LING 538 / PSY 538,Linguistics,Computational Linguistics,core_ai,NLP
+CSC 539 / DATA 539 / INFO 539 / LING 539,Linguistics,Statistical Natural Language Processing,core_ai,ML; NLP; STAT
+LING 582,Linguistics,Advanced Statistical Natural Language Processing,applied_ai,NLP; STAT
+MATH 571A / STAT 571A,Mathematics,Advanced Statistical Regression Analysis,core_data_science,STAT
+MIS 510,Management Information Systems,Web Computing and Mining,applied_data_science,BI; DL; DM; ML; NLP
+OPTI 636,"Optical Sciences, Col",Noise in Imaging Systems,applied_ai,CV; STAT
+COGS 555 / CSC 555 / PHIL 555,Philosophy,Philosophy and Artificial Intelligence,Philosophy of AI,AI
+PHIL 544A / PSY 544A,Psychology,Computational Cognitive Neuroscience,core_ai,AI; DL; ML
+SIE 536,Systems & Industrial Engr,Experiment Design and Regression,core_data_science,ML; STAT
+MIS 545,Management Information Systems,Data Mining and Machine Learning,applied_data_science,DM; ML; NLP; STAT
+ECON 579 / GEOG 579 / PLG 579 / STAT 579,"Geography & Dev, Sch of",Spatial Statistics and Spatial Econometrics,applied_data_science,STAT
+INFO 521,Information Science,Machine Learning,core_ai,ML
+GIST 603,"Geography & Dev, Sch of",Advanced Geographic Information Systems & Tech I,applied_data_science,STAT
+GIST 604,"Geography & Dev, Sch of",Advanced Geographic Information Systems & Tech II,applied_data_science,CV; DM; STAT
+INFO 550,Information Science,Artificial Intelligence,core_ai,AI; ML; STAT
+INFO 510,Information Science,Bayesian Modeling and Inference,core_data_science,ML; STAT
+MATH 574M,Mathematics,Statistical Machine Learning,core_ai,ML; STAT
+ECE 511,Electrical & Computer Engr,Numeric Modeling of Physics & Biological Systems,applied_ai,AI; DL; ML
+INFO 555,Information Science,Applied Natural Language Processing,applied_ai,ML; NLP
+INFO 556,Information Science,Text Retrieval and Web Search,applied_ai,DM; ML; NLP
+MIS 586,Management Information Systems,Big Data Analytics,core_ai,DL; ML
+CSC 583,Computer Science,Text Retrieval and Web Search,core_ai,DM; ML; NLP
+ECE 576A,Electrical & Computer Engr,Engineering of Computer Based Systems,other,AI
+INFO 514 / POL 514,Information Science,Computational Social Science,applied_data_science,NLP; STAT
+ACBS 567 / BE 567,Animal & Biomedical Sciences,Computation in Biomedicine,applied_ai,DM; STAT
+MNE 520,"Mining Engr & Mineral Res, Sch",Data Analysis and Application Development for Mining Engineers,applied_data_science,DM
+ECE 523,Electrical & Computer Engr,Engineering Applications of Machine Learning and Data Analytics,applied_ai,DL; ML; STAT
+CSC 535,Computer Science,Probabilistic Graphical Models,core_ai,CV; ML; STAT
+ASTR 502,Astronomy,Data Mining and Machine Learning in Astronomy,applied_data_science,DM; ML; STAT
+MIS 601,Management Information Systems,Statistical Foundations of Machine Learning,core_data_science,ML; STAT
+BE 585,Biosystems Engineering,Remote Sensing Data and Methods,applied_data_science,
+GIST 501B,"Geography & Dev, Sch of",Remote Sensing Science,other,CV; DM
+GIST 602B,"Geography & Dev, Sch of",Vector Spatial Analysis,applied_data_science,DM; STAT
+INFO 557,Information Science,Neural Networks,core_ai,CV; DL; ML; NLP
+INFO 523,Information Science,Data Mining and Discovery,core_data_science,AI; DM; ML; STAT
+BME 578 / SIE 578,Biomedical Engineering,Artificial Intelligence for Health and Medicine,applied_ai,AI; ML
+CSC 585,Computer Science,Algorithms for Natural Language Processing,core_ai,DL; ML; NLP
+INFO 525,Information Science,Algorithms for Games,core_ai,AI
+NSC 503,"Nutrl Sci & Wellness, Sch of",Statistics for Applied Nutritional Sciences III,core_data_science,STAT
+SIE 575,Systems & Industrial Engr,Bayesian Machine Learning and Optimal Learning I,core_ai,ML; STAT
+ASTR 513,Astronomy,Statistical and Computational Methods in Astrophysics,applied_data_science,ML; STAT
+LAW 655E,Law,Technology Law & Policy Lab,other,
+BE 534,Biosystems Engineering,Biosystems Analytics,applied_data_science,ML
+CSC 580,Computer Science,Principles of Machine Learning,core_ai,DL; ML; STAT
+HRTS 543,"Global Studies, Sch of",Advancing Human Rights through Technology,applied_ai,
+MIS 584,Management Information Systems,Big Data Technologies,applied_data_science,BI; ML
+SIE 533,Systems & Industrial Engr,Fundamentals of Data Science for Engineers,core_data_science,ML; STAT
+BAT 502 / BE 502,Biosystems Engineering,Fundamentals of Computing in Biosystems Analytics,applied_data_science,CV; DM; STAT
+CR 503 / CTS 503,"Medicine, College of, Tucson",Informatics for Clinical Research,applied_data_science,DM; STAT
+BIOS 511 / EPID 511,Epidemiology and Biostatistics,Healthcare Data Science,applied_data_science,ML; STAT
+AREC 697,Agricultural & Applied Econ,Topics in Advanced Applied Econometrics and Data Analytics,applied_data_science,STAT
+CSC 588,Computer Science,Machine Learning Theory,core_ai,ML; STAT
+ECON 511A,Economics,Econometrics,applied_data_science,ML; STAT
+MIS 615,Management Information Systems,Network Science: Theory and Applications,applied_data_science,DM; STAT
+CSC 696H,Computer Science,Advanced Topics in Artificial Intelligence,core_ai,AI
+LING 529,Linguistics,Human Language Technology I,core_ai,AI; NLP; STAT
+LING 531,Linguistics,Human Language Technology II,core_ai,ML; NLP; STAT
+MEDI 896C,Medicine,Virtual and On-line Healthcare Education and Training,applied_ai,AI
+INFO 536,Information Science,Data Science and Public Interests,applied_data_science,
+INFO 531,Information Science,Data Warehousing and Analytics in the Cloud,core_data_science,BI
+MCB 547,Molecular & Cellular Biology,Big Data in Molecular Biology and Biomedicine,applied_data_science,DM; ML; STAT
+PPEL 530,Political Economy & Moral Sci,Data Science for Social Sciences,applied_data_science,STAT
+APPL 581B / MATH 581B,Mathematics,Methods of Applied Mathematics II,other,DL; ML; STAT
+APPL 589B / MATH 589B,Mathematics,Algorithms of Applied Mathematics II,other,ML; STAT
+LIS 535,Information Science,Information Services in Business and Industry,Responsible/Ethical AI,AI; BI
+MIS 563,Management Information Systems,Statistical Machine Learning with Applications,applied_ai,ML; STAT
+LAW 689D,Law,Legal Practice in the Age of A.I. and Big Data,Responsible/Ethical AI,AI; ML
+EVAL 602,Social & Behavioral Sci Admin,Research Dissemination and Translation to Facilitate Change,other,BI
+ECE 540,Electrical & Computer Engr,Quantum Sensing and Quantum Machine Learning,core_ai,ML
+MIS 548,Management Information Systems,Introduction to Deep Learning,core_ai,CV; DL; ML
+ACCT 562D,"Accountancy, Sch of",Accounting Data Analytics,applied_data_science,BI
+APPL 527 / MSE 527,Materials Science & Engr,Physics-informed machine learning and engineering applications,applied_ai,DL; ML; STAT
+INFO 502,Information Science,Data Ethics,Responsible/Ethical AI,AI
+BAT 577 / BE 577,Biosystems Engineering,Statistical Methods for Omics Data,applied_data_science,ML; STAT
+GAME 526,Information Science,Game Artificial Intelligence,core_ai,AI; ML
+MIS 544,Management Information Systems,Healthcare Analytics,applied_data_science,ML; STAT
+MNE 559,"Mining Engr & Mineral Res, Sch",Machine Learning For Mining Applications,applied_ai,ML
+BIOS 682,Epidemiology and Biostatistics,Introduction to Genomic Data Science,applied_data_science,ML; STAT
+ECON 515,Economics,Econometrics and Machine Learning,applied_data_science,ML; STAT
+INFO 621,Information Science,Advanced Machine Learning Applications,core_ai,DL; ML
+OPTI 556A,"Optical Sciences, Col",Computational Imaging,core_ai,CV; DL; ML; STAT
+BNAN 525,"Business Analytics, Sch of",Statistical Foundations of Business Analytics,core_data_science,BI; STAT
+SOC 501,"Sociology, Sch of","Computational Social Science: Introduction to Methods, Approaches, and Theories",applied_ds,ML; NLP
+MED 850B,"Medicine, College of, Tucson","Artificial Intelligence, AI literacy and Medicine",applied_ai,AI
+INFO 511,Information Science,Foundations of Data Science,core_data_science,STAT
+BNAN 530,"Business Analytics, Sch of",Foundations of Python for Analytics,core_data_science,ML
+MIS 552,Management Information Systems,Artificial Intelligence for Digital Platforms,applied_ai,AI; ML
+BIOS 553 / EPID 553,Epidemiology and Biostatistics,Health Data Science Practice,applied_data_science,ML; STAT
+BNAN 572,"Business Analytics, Sch of",Enterprise Artificial Intelligence for Business Strategies,applied_ai,AI; BI
+SIE 549,Systems & Industrial Engr,Optimization for Machine Learning,core_ai,DL; ML; STAT
+CYBV 680,Applied Science,Advanced Computational Propaganda,Responsible/Ethical AI,AI; DM; ML
+BNAN 570 / MKTG 570,"Business Analytics, Sch of",Generative AI for Market Insight and Strategies,applied_ai,AI; DL; DM; ML; NLP
+MIS 554,Management Information Systems,Artificial Intelligence for Business Intelligence,applied_ai,AI; BI; DL; ML
+MIS 553,Management Information Systems,Artificial Intelligence in Healthcare,applied_ai,AI
+MIS 550,Management Information Systems,Policy and Ethics of Artificial Intelligence for Business,applied_ai,AI
+MIS 555,Management Information Systems,Artificial Intelligence for Cybersecurity,applied_ai,AI; DL; ML; NLP
+ECE 525,Electrical & Computer Engr,Introduction to Deep Learning: An Engineering Perspective,core_ai,DL; ML
+MIS 556,Management Information Systems,Generative AI for Business,applied_ai,AI; BI; DL; ML; NLP
+INFO 504,Information Science,Digital Media: Impact and Innovations,other,AI
+CYBV 535,Applied Science,Secure Critical Infrastructures with Artificial Intelligence,applied_ai,AI; ML
+ARCE 550,Civil & Arch Engr & Mechanics,"Building Data Analytics, Visualization, and Management",applied_data_science,BI; DM
+LIS 528,Information Science,Applied AI Literacies in Information Practice,applied_ai,AI; ML
+GHI 651,"Public Health, Col of",Benefits and Risks of AI and Automation in Health and Society,applied_ai,AI
+LIS 529,Information Science,AI and the Art & Design of Learning,other,AI
+HP 501,"Health Professions, Sch of",Artificial Intelligence and Healthcare,applied_ai,AI
+RNR 537,Renewable Natural Resources,Data Wrangling in R for Ecologists,core_data_science,
+PHP 565,Public Hlth Pract Pol & Transl,Leadership and Strategy for Population Health Using Generative AI,applied_ai,AI; ML
+GHI 563,"Public Health, Col of",Foundations of Public Health Applications of Artificial Intelligence,applied_ai,AI; ML; NLP
+BNAN 565,"Business Analytics, Sch of",Regression and Analytics Models,core_data_science,ML; STAT
+HWRS 640,Hydrology & Atmospheric Sci,Computational Methods for Data Driven Earth Science,applied_data_science,DL; ML
+ECON 543,Economics,Macroeconomics in the Digital Era,other,AI
+LAW 609A,Law,Changing Legal Profession,Responsible/Ethical AI,AI
